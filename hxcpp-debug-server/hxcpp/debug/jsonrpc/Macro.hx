@@ -6,9 +6,13 @@ import haxe.macro.Compiler;
 class Macro {
 	macro public static function injectServer():Void {
 		if (Context.defined("cpp") && Context.defined("debug")) {
-			Context.getType("hxcpp.debug.jsonrpc.Server");
+			Context.onAfterInitMacros(onAfterInit);
 			Compiler.define("HXCPP_DEBUGGER");
 		}
+	}
+
+	static function onAfterInit():Void {
+		Context.getType("hxcpp.debug.jsonrpc.Server");
 	}
 
 	macro public static function getDefinedValue(key:String, defaultV) {
